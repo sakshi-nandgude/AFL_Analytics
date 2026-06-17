@@ -1,9 +1,9 @@
 import pandas as pd
 
-teams = pd.read_csv("data/raw/teams.csv")
-players = pd.read_csv("data/raw/players.csv")
-matches = pd.read_csv("data/raw/matches.csv")
-stats = pd.read_csv("data/raw/player_stats.csv")
+teams = pd.read_csv("../data/raw/teams.csv")
+players = pd.read_csv("../data/raw/players.csv")
+matches = pd.read_csv("../data/raw/matches.csv")
+stats = pd.read_csv("../data/raw/player_stats.csv")
 
 print("Teams:", len(teams))
 print("Players:", len(players))

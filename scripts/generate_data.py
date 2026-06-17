@@ -8,7 +8,7 @@ from pathlib import Path
 # CONFIG
 # =====================================================
 
-OUTPUT_DIR = Path("data/raw")
+OUTPUT_DIR = Path("../data/raw")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 SEASONS = [2023, 2024, 2025]
