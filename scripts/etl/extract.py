@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-RAW_PATH = Path("data/raw")
+RAW_PATH = Path("../data/raw")
 
 def extract_teams():
     return pd.read_csv(RAW_PATH / "teams.csv")
