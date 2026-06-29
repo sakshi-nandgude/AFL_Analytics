@@ -109,7 +109,11 @@ class PlayerStat(Base):
 
     __tablename__ = "fact_player_stats"
 
-    stat_id = Column(Integer, primary_key=True)
+    stat_id = Column(
+    Integer,
+    primary_key=True,
+    autoincrement=True
+)
 
     player_id = Column(
         Integer,
