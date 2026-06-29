@@ -5,7 +5,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(PROJECT_ROOT))
 
 from sqlalchemy import create_engine, text
-from config import DATABASE_URL
+from etl.config import DATABASE_URL
 
 try:
     engine = create_engine(DATABASE_URL)
