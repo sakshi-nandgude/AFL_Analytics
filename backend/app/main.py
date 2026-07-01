@@ -1,10 +1,10 @@
 """
-main.py
-
-Entry point for the AFL Performance Analytics API.
+FastAPI Entry Point
 """
 
 from fastapi import FastAPI
+
+from backend.app.routers.dashboard import router as dashboard_router
 
 app = FastAPI(
     title="AFL Performance Analytics API",
@@ -15,15 +15,24 @@ app = FastAPI(
 
 @app.get("/")
 def home():
+
     return {
+
         "application": "AFL Performance Analytics Portal",
-        "status": "Running",
-        "version": "1.0.0"
+
+        "status": "Running"
+
     }
 
 
 @app.get("/health")
-def health_check():
+def health():
+
     return {
+
         "status": "Healthy"
+
     }
+
+
+app.include_router(dashboard_router)
