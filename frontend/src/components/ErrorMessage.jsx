@@ -1,4 +1,4 @@
-function Loading() {
+function ErrorMessage({ message }) {
     return (
         <main
             style={{
@@ -6,9 +6,11 @@ function Loading() {
                 textAlign: "center"
             }}
         >
-            <h2>Loading...</h2>
+            <h2 style={{ color: "red" }}>
+                {message}
+            </h2>
         </main>
     );
 }
 
-export default Loading;
+export default ErrorMessage;

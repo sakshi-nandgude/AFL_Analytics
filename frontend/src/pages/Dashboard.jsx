@@ -4,12 +4,16 @@ import api from "../services/api";
 import { API_ENDPOINTS } from "../utils/constants";
 
 import KPICard from "../components/KPICard";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
 import "../styles/cards.css";
 
 function Dashboard() {
 
     const [dashboard, setDashboard] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
 
@@ -21,9 +25,15 @@ function Dashboard() {
 
                 setDashboard(response.data);
 
-            } catch (error) {
+            } catch (err) {
 
-                console.error(error);
+                console.error(err);
+
+                setError("Unable to load dashboard data.");
+
+            } finally {
+
+                setLoading(false);
 
             }
 
@@ -33,9 +43,15 @@ function Dashboard() {
 
     }, []);
 
-    if (!dashboard) {
+    if (loading) {
 
-        return <h2>Loading Dashboard...</h2>;
+        return <Loading />;
+
+    }
+
+    if (error) {
+
+        return <ErrorMessage message={error} />;
 
     }
 
@@ -47,35 +63,12 @@ function Dashboard() {
 
             <div className="kpi-grid">
 
-                <KPICard
-                    title="Teams"
-                    value={dashboard.total_teams}
-                />
-
-                <KPICard
-                    title="Players"
-                    value={dashboard.total_players}
-                />
-
-                <KPICard
-                    title="Matches"
-                    value={dashboard.total_matches}
-                />
-
-                <KPICard
-                    title="Avg Home Score"
-                    value={dashboard.avg_home_score}
-                />
-
-                <KPICard
-                    title="Avg Away Score"
-                    value={dashboard.avg_away_score}
-                />
-
-                <KPICard
-                    title="Avg Total Score"
-                    value={dashboard.avg_total_score}
-                />
+                <KPICard title="Teams" value={dashboard.total_teams} />
+                <KPICard title="Players" value={dashboard.total_players} />
+                <KPICard title="Matches" value={dashboard.total_matches} />
+                <KPICard title="Avg Home Score" value={dashboard.avg_home_score} />
+                <KPICard title="Avg Away Score" value={dashboard.avg_away_score} />
+                <KPICard title="Avg Total Score" value={dashboard.avg_total_score} />
 
             </div>
 

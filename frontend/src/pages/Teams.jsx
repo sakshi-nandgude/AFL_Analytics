@@ -4,12 +4,16 @@ import api from "../services/api";
 import { API_ENDPOINTS } from "../utils/constants";
 
 import TeamTable from "../components/TeamTable";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
 import "../styles/tables.css";
 
 function Teams() {
 
     const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
 
@@ -21,9 +25,15 @@ function Teams() {
 
                 setTeams(response.data);
 
-            } catch (error) {
+            } catch (err) {
 
-                console.error(error);
+                console.error(err);
+
+                setError("Unable to load team data.");
+
+            } finally {
+
+                setLoading(false);
 
             }
 
@@ -33,9 +43,15 @@ function Teams() {
 
     }, []);
 
-    if (teams.length === 0) {
+    if (loading) {
 
-        return <h2>Loading Teams...</h2>;
+        return <Loading />;
+
+    }
+
+    if (error) {
+
+        return <ErrorMessage message={error} />;
 
     }
 

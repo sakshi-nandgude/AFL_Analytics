@@ -4,12 +4,16 @@ import api from "../services/api";
 import { API_ENDPOINTS } from "../utils/constants";
 
 import PlayerTable from "../components/PlayerTable";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
 import "../styles/tables.css";
 
 function Players() {
 
     const [players, setPlayers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
 
@@ -21,9 +25,15 @@ function Players() {
 
                 setPlayers(response.data);
 
-            } catch (error) {
+            } catch (err) {
 
-                console.error(error);
+                console.error(err);
+
+                setError("Unable to load player data.");
+
+            } finally {
+
+                setLoading(false);
 
             }
 
@@ -33,9 +43,15 @@ function Players() {
 
     }, []);
 
-    if (players.length === 0) {
+    if (loading) {
 
-        return <h2>Loading Players...</h2>;
+        return <Loading />;
+
+    }
+
+    if (error) {
+
+        return <ErrorMessage message={error} />;
 
     }
 
