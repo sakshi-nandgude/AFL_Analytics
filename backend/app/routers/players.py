@@ -7,11 +7,11 @@ Player API Router.
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from backend.app.database import get_db
+from app.database import get_db
 
-from backend.app.schemas import PlayerSummarySchema
+from app.schemas import PlayerSummarySchema
 
-from backend.app.services.player_service import (
+from app.services.player_service import (
     get_all_players,
     get_player_by_id
 )

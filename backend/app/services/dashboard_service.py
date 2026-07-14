@@ -6,7 +6,7 @@ Contains business logic for the dashboard.
 
 from sqlalchemy.orm import Session
 
-from backend.app.models import DashboardSummary
+from app.models import DashboardSummary
 
 
 def get_dashboard_summary(db: Session):

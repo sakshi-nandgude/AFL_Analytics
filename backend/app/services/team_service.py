@@ -6,7 +6,7 @@ Business logic for Team APIs.
 
 from sqlalchemy.orm import Session
 
-from backend.app.models import TeamPerformance
+from app.models import TeamPerformance
 
 
 def get_all_teams(db: Session):

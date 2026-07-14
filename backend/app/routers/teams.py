@@ -7,11 +7,11 @@ Team API Router.
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from backend.app.database import get_db
+from app.database import get_db
 
-from backend.app.schemas import TeamPerformanceSchema
+from app.schemas import TeamPerformanceSchema
 
-from backend.app.services.team_service import (
+from app.services.team_service import (
     get_all_teams,
     get_team_by_id
 )

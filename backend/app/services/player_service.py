@@ -6,7 +6,7 @@ Business logic for Player APIs.
 
 from sqlalchemy.orm import Session
 
-from backend.app.models import PlayerSummary
+from app.models import PlayerSummary
 
 
 def get_all_players(db: Session):

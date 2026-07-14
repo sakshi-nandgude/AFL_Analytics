@@ -7,11 +7,11 @@ Dashboard API endpoints.
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from backend.app.database import get_db
+from app.database import get_db
 
-from backend.app.schemas import DashboardSummarySchema
+from app.schemas import DashboardSummarySchema
 
-from backend.app.services.dashboard_service import (
+from app.services.dashboard_service import (
     get_dashboard_summary
 )
 

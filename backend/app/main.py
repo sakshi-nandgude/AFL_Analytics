@@ -3,15 +3,26 @@ FastAPI Entry Point
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.routers.dashboard import router as dashboard_router
-from backend.app.routers.teams import router as teams_router
-from backend.app.routers.players import router as players_router
+from app.routers.dashboard import router as dashboard_router
+from app.routers.teams import router as teams_router
+from app.routers.players import router as players_router
 
 app = FastAPI(
     title="AFL Performance Analytics API",
     description="REST API for AFL Performance Analytics Portal",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
