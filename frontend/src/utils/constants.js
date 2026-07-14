@@ -2,8 +2,8 @@ export const API_ENDPOINTS = {
 
     DASHBOARD: "/dashboard/",
 
-    TEAMS: "/teams",
+    TEAMS: "/teams/",
 
-    PLAYERS: "/players"
+    PLAYERS: "/players/"
 
 };
