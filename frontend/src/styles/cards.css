@@ -1,0 +1,24 @@
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.kpi-card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.kpi-card h3{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.kpi-card h1{
+    font-size:2.5rem;
+    color:#1b5e20;
+}

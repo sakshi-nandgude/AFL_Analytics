@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 import api from "../services/api";
+import "../styles/cards.css";
+import KPICard from "../components/KPICard";
 
 import { API_ENDPOINTS } from "../utils/constants";
 
@@ -38,27 +40,47 @@ function Dashboard() {
 
     return (
 
-        <div>
+    <div style={{padding:"30px"}}>
 
-            <h1>AFL Performance Analytics Dashboard</h1>
+        <h1>AFL Performance Analytics Dashboard</h1>
 
-            <hr />
+        <div className="kpi-grid">
 
-            <p>Total Teams: {dashboard.total_teams}</p>
+            <KPICard
+                title="Teams"
+                value={dashboard.total_teams}
+            />
 
-            <p>Total Players: {dashboard.total_players}</p>
+            <KPICard
+                title="Players"
+                value={dashboard.total_players}
+            />
 
-            <p>Total Matches: {dashboard.total_matches}</p>
+            <KPICard
+                title="Matches"
+                value={dashboard.total_matches}
+            />
 
-            <p>Average Home Score: {dashboard.avg_home_score}</p>
+            <KPICard
+                title="Avg Home Score"
+                value={dashboard.avg_home_score}
+            />
 
-            <p>Average Away Score: {dashboard.avg_away_score}</p>
+            <KPICard
+                title="Avg Away Score"
+                value={dashboard.avg_away_score}
+            />
 
-            <p>Average Total Score: {dashboard.avg_total_score}</p>
+            <KPICard
+                title="Avg Total Score"
+                value={dashboard.avg_total_score}
+            />
 
         </div>
 
-    );
+    </div>
+
+);
 
 }
 
