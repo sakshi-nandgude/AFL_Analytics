@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
 import api from "../services/api";
-import "../styles/cards.css";
+import { API_ENDPOINTS } from "../utils/constants";
+
 import KPICard from "../components/KPICard";
 
-import { API_ENDPOINTS } from "../utils/constants";
+import "../styles/cards.css";
 
 function Dashboard() {
 
@@ -40,47 +41,47 @@ function Dashboard() {
 
     return (
 
-    <div style={{padding:"30px"}}>
+        <main style={{ padding: "30px" }}>
 
-        <h1>AFL Performance Analytics Dashboard</h1>
+            <h1>AFL Performance Analytics Dashboard</h1>
 
-        <div className="kpi-grid">
+            <div className="kpi-grid">
 
-            <KPICard
-                title="Teams"
-                value={dashboard.total_teams}
-            />
+                <KPICard
+                    title="Teams"
+                    value={dashboard.total_teams}
+                />
 
-            <KPICard
-                title="Players"
-                value={dashboard.total_players}
-            />
+                <KPICard
+                    title="Players"
+                    value={dashboard.total_players}
+                />
 
-            <KPICard
-                title="Matches"
-                value={dashboard.total_matches}
-            />
+                <KPICard
+                    title="Matches"
+                    value={dashboard.total_matches}
+                />
 
-            <KPICard
-                title="Avg Home Score"
-                value={dashboard.avg_home_score}
-            />
+                <KPICard
+                    title="Avg Home Score"
+                    value={dashboard.avg_home_score}
+                />
 
-            <KPICard
-                title="Avg Away Score"
-                value={dashboard.avg_away_score}
-            />
+                <KPICard
+                    title="Avg Away Score"
+                    value={dashboard.avg_away_score}
+                />
 
-            <KPICard
-                title="Avg Total Score"
-                value={dashboard.avg_total_score}
-            />
+                <KPICard
+                    title="Avg Total Score"
+                    value={dashboard.avg_total_score}
+                />
 
-        </div>
+            </div>
 
-    </div>
+        </main>
 
-);
+    );
 
 }
 

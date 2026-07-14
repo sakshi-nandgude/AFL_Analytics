@@ -4,7 +4,7 @@ import "../styles/navbar.css";
 function Navbar() {
     return (
         <nav>
-            <h2>AFL Analytics</h2>
+            <h2>AFL Performance Analytics Portal</h2>
 
             <ul>
                 <li>

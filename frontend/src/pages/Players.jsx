@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import api from "../services/api";
-
 import { API_ENDPOINTS } from "../utils/constants";
 
 import PlayerTable from "../components/PlayerTable";
@@ -22,9 +21,7 @@ function Players() {
 
                 setPlayers(response.data);
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(error);
 
@@ -44,13 +41,13 @@ function Players() {
 
     return (
 
-        <div style={{ padding: "30px" }}>
+        <main style={{ padding: "30px" }}>
 
             <h1>AFL Players</h1>
 
             <PlayerTable players={players} />
 
-        </div>
+        </main>
 
     );
 

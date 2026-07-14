@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Teams from "./pages/Teams";
 import Players from "./pages/Players";
 import NotFound from "./pages/NotFound";
+import Footer from "./components/Footer";
 
 function App() {
     return (
@@ -25,6 +26,8 @@ function App() {
 
             </Routes>
 
+            <Footer />
+            
         </BrowserRouter>
     );
 }

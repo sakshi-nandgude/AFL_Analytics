@@ -21,9 +21,7 @@ function Teams() {
 
                 setTeams(response.data);
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(error);
 
@@ -43,13 +41,13 @@ function Teams() {
 
     return (
 
-        <div style={{padding:"30px"}}>
+        <main style={{ padding: "30px" }}>
 
             <h1>AFL Teams</h1>
 
             <TeamTable teams={teams} />
 
-        </div>
+        </main>
 
     );
 
