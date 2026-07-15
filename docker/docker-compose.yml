@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+
+  postgres:
+
+    image: postgres:16
+
+    container_name: afl-postgres
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: afl_analytics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+
+    container_name: afl-backend
+
+    depends_on:
+      - postgres
+
+    env_file:
+      - ../backend/.env.docker
+
+    ports:
+      - "8000:8000"
+
+  frontend:
+
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+
+    container_name: afl-frontend
+
+    depends_on:
+      - backend
+
+    ports:
+      - "5173:5173"
+
+volumes:
+
+  postgres_data:
