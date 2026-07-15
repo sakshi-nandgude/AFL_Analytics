@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   postgres:
@@ -8,7 +6,7 @@ services:
 
     container_name: afl-postgres
 
-    restart: always
+    restart: unless-stopped
 
     environment:
       POSTGRES_DB: afl_analytics
@@ -21,6 +19,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d afl_analytics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - afl-network
+
+
+
   backend:
 
     build:
@@ -29,14 +38,22 @@ services:
 
     container_name: afl-backend
 
-    depends_on:
-      - postgres
+    restart: unless-stopped
 
     env_file:
       - ../backend/.env.docker
 
+    depends_on:
+      postgres:
+        condition: service_healthy
+
     ports:
       - "8000:8000"
+
+    networks:
+      - afl-network
+
+
 
   frontend:
 
@@ -46,12 +63,26 @@ services:
 
     container_name: afl-frontend
 
+    restart: unless-stopped
+
     depends_on:
       - backend
 
     ports:
       - "5173:5173"
 
+    networks:
+      - afl-network
+
+
+
 volumes:
 
   postgres_data:
+
+
+
+networks:
+
+  afl-network:
+    driver: bridge
