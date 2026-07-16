@@ -27,4 +27,5 @@ DATABASE_URL = (
     f"{DB_CONFIG['host']}:"
     f"{DB_CONFIG['port']}/"
     f"{DB_CONFIG['database']}"
+    f"?sslmode=require"
 )
