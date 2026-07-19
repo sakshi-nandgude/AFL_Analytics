@@ -8,7 +8,7 @@ from etl.database import get_session
 from database.models import Base
 from etl.database import engine
 
-# Create database tables if they do not exist
+# Create database tables if they do not exist in database 
 Base.metadata.create_all(bind=engine)
 
 from etl.extract import (
