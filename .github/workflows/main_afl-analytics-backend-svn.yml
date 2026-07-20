@@ -38,9 +38,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            backend
-            !backend/antenv/
+          path: backend/**
+            
 
       # 🚫 Opting Out of Oryx Build
       # If you prefer to disable the Oryx build process during deployment, follow these steps:
@@ -70,8 +69,7 @@ jobs:
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'afl-analytics-backend-svn'
           slot-name: 'Production'
-          
+          package: .
