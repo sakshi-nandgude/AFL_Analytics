@@ -229,13 +229,14 @@ AFL_Analytics/
 │   │   ├── main.py
 │   │   └── __init__.py
 │   │
-│   ├── etl/
-│   │   ├── extract.py
-│   │   ├── transform.py
-│   │   ├── load.py
-│   │   ├── generate_data.py
-│   │   └── config.py
-│   │
+│── etl/
+│   ├── extract.py
+│   ├── transform.py
+│   ├── load.py
+│   ├── generate_data.py
+│   └── config.py
+|
+│── docker/
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── ...
@@ -248,8 +249,6 @@ AFL_Analytics/
 │   ├── pages/
 │   ├── Dockerfile
 │   └── ...
-│
-├── docker-compose.yml
 │
 ├── .github/
 │   └── workflows/
