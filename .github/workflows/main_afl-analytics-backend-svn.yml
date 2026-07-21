@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend
-          path: backend
+          path: backend/**
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,7 +49,15 @@ jobs:
           name: backend
           path: .
 
-      - name: Azure Login
+      - name: Show downloaded files
+        run: |
+          echo "Current directory:"
+          pwd
+          echo ""
+          echo "Directory structure:"
+          ls -R
+
+      - name: Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CABF23AA3CEF4081BD51E28BF5864188 }}
@@ -61,4 +69,4 @@ jobs:
         with:
           app-name: afl-analytics-backend-svn
           slot-name: Production
-          package: ./backend
+          package: .
