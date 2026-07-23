@@ -15,6 +15,8 @@ function Teams() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
+    const [sortColumn, setSortColumn] = useState("win_percentage");
+    const [sortDirection, setSortDirection] = useState("desc");
 
     useEffect(() => {
 
@@ -56,9 +58,33 @@ function Teams() {
 
     }
 
-    const filteredTeams = teams.filter((team) =>
-    team.team_name.toLowerCase().includes(searchTerm.toLowerCase())
-);
+    const filteredTeams = teams
+        .filter((team) =>
+            team.team_name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .sort((a, b) => {
+            const first = a[sortColumn];
+            const second = b[sortColumn];
+
+            if (typeof first === "string") {
+                return sortDirection === "asc"
+                    ? first.localeCompare(second)
+                    : second.localeCompare(first);
+            }
+
+            return sortDirection === "asc"
+                ? first - second
+                : second - first;
+        });
+
+    function handleSort(column) {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortColumn(column);
+            setSortDirection("desc");
+        }
+    }
 
     return (
 
@@ -66,33 +92,38 @@ function Teams() {
 
             <h1>Team Performance Analytics</h1>
 
-        <p
-            style={{
-                color: "#666",
-                marginBottom: "25px"
-            }}
-        >
+            <p
+                style={{
+                    color: "#666",
+                    marginBottom: "25px"
+                }}
+            >
 
-            Performance metrics for every AFL team across all recorded matches.
+                Performance metrics for every AFL team across all recorded matches.
 
-        </p>
+            </p>
 
             <input
-    type="text"
-    placeholder="Search team..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    style={{
-        width: "300px",
-        padding: "10px",
-        marginBottom: "20px",
-        fontSize: "16px",
-        borderRadius: "6px",
-        border: "1px solid #ccc"
-    }}
-/>
+                type="text"
+                placeholder="Search team..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                    width: "300px",
+                    padding: "10px",
+                    marginBottom: "20px",
+                    fontSize: "16px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc"
+                }}
+            />
 
-<TeamTable teams={filteredTeams} />
+            <TeamTable
+                teams={filteredTeams}
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                onSort={handleSort}
+            />
 
         </main>
 
