@@ -47,13 +47,23 @@ class TeamPerformance(Base):
 
     team_name = Column(String)
 
+    matches_played = Column(Integer)
+
     wins = Column(Integer)
 
     losses = Column(Integer)
 
+    draws = Column(Integer)
+
     win_percentage = Column(Float)
 
+    points_for = Column(Integer)
+
+    points_against = Column(Integer)
+
     average_score = Column(Float)
+
+    average_conceded = Column(Float)
 
 
 # ==========================================================
