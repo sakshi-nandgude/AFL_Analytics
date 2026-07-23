@@ -6,17 +6,27 @@ function TeamTable({ teams }) {
 
                 <tr>
 
-                    <th>ID</th>
+                    <th>Rank</th>
 
                     <th>Team</th>
+
+                    <th>Matches</th>
 
                     <th>Wins</th>
 
                     <th>Losses</th>
 
+                    <th>Draws</th>
+
                     <th>Win %</th>
 
-                    <th>Average Score</th>
+                    <th>Points For</th>
+
+                    <th>Points Against</th>
+
+                    <th>Avg Score</th>
+
+                    <th>Avg Against</th>
 
                 </tr>
 
@@ -24,21 +34,31 @@ function TeamTable({ teams }) {
 
             <tbody>
 
-                {teams.map(team => (
+                {teams.map((team, index) => (
 
                     <tr key={team.team_id}>
 
-                        <td>{team.team_id}</td>
+                        <td>{index + 1}</td>
 
                         <td>{team.team_name}</td>
+
+                        <td>{team.matches_played}</td>
 
                         <td>{team.wins}</td>
 
                         <td>{team.losses}</td>
 
-                        <td>{team.win_percentage}</td>
+                        <td>{team.draws}</td>
 
-                        <td>{team.average_score}</td>
+                        <td>{team.win_percentage.toFixed(2)}%</td>
+
+                        <td>{team.points_for}</td>
+
+                        <td>{team.points_against}</td>
+
+                        <td>{team.average_score.toFixed(2)}</td>
+
+                        <td>{team.average_conceded.toFixed(2)}</td>
 
                     </tr>
 

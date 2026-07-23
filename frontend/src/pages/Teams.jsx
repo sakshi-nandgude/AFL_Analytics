@@ -59,7 +59,18 @@ function Teams() {
 
         <main style={{ padding: "30px" }}>
 
-            <h1>AFL Teams</h1>
+            <h1>Team Performance Analytics</h1>
+
+        <p
+            style={{
+                color: "#666",
+                marginBottom: "25px"
+            }}
+        >
+
+            Performance metrics for every AFL team across all recorded matches.
+
+        </p>
 
             <TeamTable teams={teams} />
 
