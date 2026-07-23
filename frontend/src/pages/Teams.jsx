@@ -6,6 +6,8 @@ import { API_ENDPOINTS } from "../utils/constants";
 import TeamTable from "../components/TeamTable";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
+import "../styles/dashboard.css";
+import DashboardCard from "../components/DashboardCard";
 
 import "../styles/tables.css";
 
@@ -69,6 +71,25 @@ function Teams() {
 
     if (error) return <ErrorMessage message={error} />;
 
+    const totalTeams = teams.length;
+
+    const totalMatches = teams.reduce(
+        (sum, team) => sum + team.matches_played,
+        0
+    ) / 2;
+
+    const averageWinPercentage =
+        teams.reduce((sum, team) => sum + team.win_percentage, 0) /
+        totalTeams;
+
+    const bestTeam = [...teams].sort(
+        (a, b) => b.win_percentage - a.win_percentage
+    )[0];
+
+    const highestScoringTeam = [...teams].sort(
+        (a, b) => b.average_score - a.average_score
+    )[0];
+
     return (
         <main style={{ padding: "30px" }}>
             <h1>Team Performance Analytics</h1>
@@ -76,6 +97,35 @@ function Teams() {
             <p style={{ color: "#666", marginBottom: "20px" }}>
                 Performance metrics for every AFL team.
             </p>
+
+            <div className="dashboard-grid">
+
+                <DashboardCard
+                    title="Total Teams"
+                    value={totalTeams}
+                />
+
+                <DashboardCard
+                    title="Total Matches"
+                    value={Math.round(totalMatches)}
+                />
+
+                <DashboardCard
+                    title="Average Win %"
+                    value={`${averageWinPercentage.toFixed(2)}%`}
+                />
+
+                <DashboardCard
+                    title="Best Team"
+                    value={bestTeam?.team_name}
+                />
+
+                <DashboardCard
+                    title="Highest Scoring Team"
+                    value={highestScoringTeam?.team_name}
+                />
+
+            </div>
 
             <input
                 type="text"
