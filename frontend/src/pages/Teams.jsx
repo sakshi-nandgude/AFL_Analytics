@@ -14,6 +14,7 @@ function Teams() {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
 
@@ -55,6 +56,10 @@ function Teams() {
 
     }
 
+    const filteredTeams = teams.filter((team) =>
+    team.team_name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
     return (
 
         <main style={{ padding: "30px" }}>
@@ -72,7 +77,22 @@ function Teams() {
 
         </p>
 
-            <TeamTable teams={teams} />
+            <input
+    type="text"
+    placeholder="Search team..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    style={{
+        width: "300px",
+        padding: "10px",
+        marginBottom: "20px",
+        fontSize: "16px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+    }}
+/>
+
+<TeamTable teams={filteredTeams} />
 
         </main>
 
