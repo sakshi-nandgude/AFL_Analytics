@@ -1,4 +1,16 @@
-function TeamTable({ teams }) {
+function TeamTable({
+    teams,
+    sortColumn,
+    sortDirection,
+    onSort,
+}) {
+
+    const arrow = (column) => {
+        if (sortColumn !== column) return "";
+
+        return sortDirection === "asc" ? " ▲" : " ▼";
+    };
+
     return (
         <table className="team-table">
 
@@ -6,44 +18,76 @@ function TeamTable({ teams }) {
 
                 <tr>
 
-                    <th onClick={() => onSort("team_name")} style={{ cursor: "pointer" }}>
-                        Team
+                    <th>Rank</th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("team_name")}
+                    >
+                        Team{arrow("team_name")}
                     </th>
 
-                    <th onClick={() => onSort("matches_played")} style={{ cursor: "pointer" }}>
-                        MP
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("matches_played")}
+                    >
+                        MP{arrow("matches_played")}
                     </th>
 
-                    <th onClick={() => onSort("wins")} style={{ cursor: "pointer" }}>
-                        Wins
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("wins")}
+                    >
+                        Wins{arrow("wins")}
                     </th>
 
-                    <th onClick={() => onSort("losses")} style={{ cursor: "pointer" }}>
-                        Losses
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("losses")}
+                    >
+                        Losses{arrow("losses")}
                     </th>
 
-                    <th onClick={() => onSort("draws")} style={{ cursor: "pointer" }}>
-                        Draws
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("draws")}
+                    >
+                        Draws{arrow("draws")}
                     </th>
 
-                    <th onClick={() => onSort("win_percentage")} style={{ cursor: "pointer" }}>
-                        Win %
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("win_percentage")}
+                    >
+                        Win %{arrow("win_percentage")}
                     </th>
 
-                    <th onClick={() => onSort("points_for")} style={{ cursor: "pointer" }}>
-                        Points For
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("points_for")}
+                    >
+                        Points For{arrow("points_for")}
                     </th>
 
-                    <th onClick={() => onSort("points_against")} style={{ cursor: "pointer" }}>
-                        Points Against
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("points_against")}
+                    >
+                        Points Against{arrow("points_against")}
                     </th>
 
-                    <th onClick={() => onSort("average_score")} style={{ cursor: "pointer" }}>
-                        Avg Score
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("average_score")}
+                    >
+                        Avg Score{arrow("average_score")}
                     </th>
 
-                    <th onClick={() => onSort("average_conceded")} style={{ cursor: "pointer" }}>
-                        Avg Against
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("average_conceded")}
+                    >
+                        Avg Against{arrow("average_conceded")}
                     </th>
 
                 </tr>
@@ -53,7 +97,6 @@ function TeamTable({ teams }) {
             <tbody>
 
                 {teams.map((team, index) => (
-
                     <tr key={team.team_id}>
 
                         <td>{index + 1}</td>
@@ -68,18 +111,17 @@ function TeamTable({ teams }) {
 
                         <td>{team.draws}</td>
 
-                        <td>{team.win_percentage.toFixed(2)}%</td>
+                        <td>{Number(team.win_percentage).toFixed(2)}%</td>
 
                         <td>{team.points_for}</td>
 
                         <td>{team.points_against}</td>
 
-                        <td>{team.average_score.toFixed(2)}</td>
+                        <td>{Number(team.average_score).toFixed(2)}</td>
 
-                        <td>{team.average_conceded.toFixed(2)}</td>
+                        <td>{Number(team.average_conceded).toFixed(2)}</td>
 
                     </tr>
-
                 ))}
 
             </tbody>

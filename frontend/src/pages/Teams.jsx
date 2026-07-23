@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import api from "../services/api";
 import { API_ENDPOINTS } from "../utils/constants";
@@ -10,59 +10,46 @@ import ErrorMessage from "../components/ErrorMessage";
 import "../styles/tables.css";
 
 function Teams() {
-
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
     const [searchTerm, setSearchTerm] = useState("");
+
     const [sortColumn, setSortColumn] = useState("win_percentage");
     const [sortDirection, setSortDirection] = useState("desc");
 
     useEffect(() => {
-
         async function loadTeams() {
-
             try {
-
                 const response = await api.get(API_ENDPOINTS.TEAMS);
-
                 setTeams(response.data);
-
             } catch (err) {
-
                 console.error(err);
-
                 setError("Unable to load team data.");
-
             } finally {
-
                 setLoading(false);
-
             }
-
         }
 
         loadTeams();
-
     }, []);
 
-    if (loading) {
-
-        return <Loading />;
-
+    function handleSort(column) {
+        if (sortColumn === column) {
+            setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortColumn(column);
+            setSortDirection("desc");
+        }
     }
 
-    if (error) {
-
-        return <ErrorMessage message={error} />;
-
-    }
-
-    const filteredTeams = teams
-        .filter((team) =>
+    const filteredTeams = useMemo(() => {
+        const filtered = teams.filter((team) =>
             team.team_name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .sort((a, b) => {
+        );
+
+        return [...filtered].sort((a, b) => {
             const first = a[sortColumn];
             const second = b[sortColumn];
 
@@ -76,31 +63,18 @@ function Teams() {
                 ? first - second
                 : second - first;
         });
+    }, [teams, searchTerm, sortColumn, sortDirection]);
 
-    function handleSort(column) {
-        if (sortColumn === column) {
-            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-        } else {
-            setSortColumn(column);
-            setSortDirection("desc");
-        }
-    }
+    if (loading) return <Loading />;
+
+    if (error) return <ErrorMessage message={error} />;
 
     return (
-
         <main style={{ padding: "30px" }}>
-
             <h1>Team Performance Analytics</h1>
 
-            <p
-                style={{
-                    color: "#666",
-                    marginBottom: "25px"
-                }}
-            >
-
-                Performance metrics for every AFL team across all recorded matches.
-
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+                Performance metrics for every AFL team.
             </p>
 
             <input
@@ -109,12 +83,12 @@ function Teams() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
-                    width: "300px",
+                    width: "320px",
                     padding: "10px",
                     marginBottom: "20px",
-                    fontSize: "16px",
                     borderRadius: "6px",
-                    border: "1px solid #ccc"
+                    border: "1px solid #ccc",
+                    fontSize: "15px",
                 }}
             />
 
@@ -124,11 +98,8 @@ function Teams() {
                 sortDirection={sortDirection}
                 onSort={handleSort}
             />
-
         </main>
-
     );
-
 }
 
 export default Teams;
