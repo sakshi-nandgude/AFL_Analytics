@@ -24,3 +24,12 @@
     font-size: 32px;
     color: #1b4f72;
 }
+
+.dashboard-card p {
+    margin: 12px 0;
+    font-size: 17px;
+}
+
+.dashboard-card strong {
+    color: #1b4f72;
+}

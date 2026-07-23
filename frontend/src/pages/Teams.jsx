@@ -9,7 +9,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import "../styles/dashboard.css";
 import DashboardCard from "../components/DashboardCard";
 import WinPercentageChart from "../components/WinPercentageChart";
-
+import LeagueInsights from "../components/LeagueInsights";
 import "../styles/tables.css";
 
 function Teams() {
@@ -127,6 +127,8 @@ function Teams() {
                 />
 
             </div>
+
+            <LeagueInsights teams={teams} />
 
             <WinPercentageChart teams={filteredTeams} />
 
