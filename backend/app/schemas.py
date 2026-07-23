@@ -33,11 +33,26 @@ class DashboardSummarySchema(BaseModel):
 class TeamPerformanceSchema(BaseModel):
 
     team_id: int
+
     team_name: str
+
+    matches_played: int
+
     wins: int
+
     losses: int
+
+    draws: int
+
     win_percentage: float
+
+    points_for: int
+
+    points_against: int
+
     average_score: float
+
+    average_conceded: float
 
     class Config:
         from_attributes = True
