@@ -8,6 +8,7 @@ import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import "../styles/dashboard.css";
 import DashboardCard from "../components/DashboardCard";
+import WinPercentageChart from "../components/WinPercentageChart";
 
 import "../styles/tables.css";
 
@@ -126,6 +127,8 @@ function Teams() {
                 />
 
             </div>
+
+            <WinPercentageChart teams={filteredTeams} />
 
             <input
                 type="text"
