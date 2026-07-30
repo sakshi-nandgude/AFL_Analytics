@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers.dashboard import router as dashboard_router
 from app.routers.teams import router as teams_router
 from app.routers.players import router as players_router
-from app.routes.match_routes import router as match_router
+from app.routers.match_routes import router as match_router
 
 app = FastAPI(
     title="AFL Performance Analytics API",
