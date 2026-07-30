@@ -7,6 +7,9 @@ import Teams from "./pages/Teams";
 import Players from "./pages/Players";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
+import Matches from "./pages/Matches";
+
+
 
 function App() {
     return (
@@ -22,12 +25,14 @@ function App() {
 
                 <Route path="/players" element={<Players />} />
 
+                <Route path="/matches" element={<Matches />} />
+
                 <Route path="*" element={<NotFound />} />
 
             </Routes>
 
             <Footer />
-            
+
         </BrowserRouter>
     );
 }

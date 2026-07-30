@@ -4,6 +4,8 @@ export const API_ENDPOINTS = {
 
     TEAMS: "/teams/",
 
-    PLAYERS: "/players/"
+    PLAYERS: "/players/",
+
+    MATCHES: "/matches/"
 
 };

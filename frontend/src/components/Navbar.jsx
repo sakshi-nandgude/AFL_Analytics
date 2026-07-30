@@ -18,6 +18,10 @@ function Navbar() {
                 <li>
                     <Link to="/players">Players</Link>
                 </li>
+
+                <li>
+                    <Link to="/matches">Matches</Link>
+                </li>
             </ul>
         </nav>
     );
