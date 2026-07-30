@@ -9,7 +9,7 @@ from app.routers.dashboard import router as dashboard_router
 from app.routers.teams import router as teams_router
 from app.routers.players import router as players_router
 from app.routers.match_routes import router as match_router
-from app.routes.health_routes import router as health_router
+from app.routers.health_routes import router as health_router
 
 app = FastAPI(
     title="AFL Performance Analytics API",
