@@ -535,6 +535,86 @@ Docker ensures that developers can run the project consistently across different
 
 ---
 
+# 🚀 Deployment
+
+The AFL Analytics Platform is deployed using a multi-cloud architecture to ensure scalability, reliability, and continuous integration.
+
+| Component | Platform |
+|-----------|----------|
+| Frontend | Vercel |
+| Backend API | Render |
+| Database | Azure PostgreSQL Flexible Server |
+| Version Control | GitHub |
+
+---
+
+## ☁️ Deployment Architecture
+
+```text
+                 +----------------------+
+                 |   React + Vite App   |
+                 |      (Vercel)        |
+                 +----------+-----------+
+                            |
+                            |
+                            ▼
+                 +----------------------+
+                 |  FastAPI Backend     |
+                 |      (Render)        |
+                 +----------+-----------+
+                            |
+                            |
+                            ▼
+           +----------------------------------+
+           | Azure PostgreSQL Flexible Server |
+           |    Star Schema Data Warehouse    |
+           +----------------------------------+
+```
+
+---
+
+## 🔄 Deployment Evolution
+
+This project was originally designed to be fully deployed on **Microsoft Azure**, including:
+
+- Azure App Service (Backend)
+- Azure PostgreSQL Flexible Server (Database)
+- GitHub Actions CI/CD
+- Azure cloud deployment configuration
+
+During deployment, Azure App Service encountered **subscription quota limitations**, which affected reliable public hosting of the backend service. Rather than redesigning the application, the backend was migrated to **Render**, while retaining the existing Azure PostgreSQL database and overall cloud architecture.
+
+This migration demonstrates the ability to deploy and maintain applications across multiple cloud platforms while preserving the application's architecture, data layer, and deployment workflow.
+
+---
+
+## ⚙️ Cloud Technologies
+
+- Microsoft Azure
+  - Azure PostgreSQL Flexible Server
+  - Azure App Service
+- Render
+- Vercel
+- GitHub
+- GitHub Actions
+- FastAPI
+- React (Vite)
+- Gunicorn
+- Uvicorn
+
+---
+
+## 🔁 Continuous Deployment
+
+The application uses GitHub as the central source repository with automated deployments.
+
+- **Frontend:** GitHub → Vercel
+- **Backend:** GitHub → Render
+
+Azure deployment configuration and GitHub Actions workflows have been retained in the repository to demonstrate experience with Azure App Service deployment and CI/CD pipelines.
+
+---
+
 # ☁ Microsoft Azure Deployment
 
 The backend is hosted on **Microsoft Azure App Service**, providing a managed cloud environment for FastAPI.
