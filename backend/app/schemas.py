@@ -108,15 +108,15 @@ class TeamRankingSchema(BaseModel):
 # Match Summary
 # ==========================================================
 
+from pydantic import BaseModel
+
 class MatchSummarySchema(BaseModel):
 
     match_id: int
 
-    season_year: int
+    season: int
 
-    round_number: int
-
-    match_date: date
+    round: int
 
     home_team: str
 
@@ -125,6 +125,10 @@ class MatchSummarySchema(BaseModel):
     home_score: int
 
     away_score: int
+
+    winning_margin: int
+
+    total_score: int
 
     winner: str
 
