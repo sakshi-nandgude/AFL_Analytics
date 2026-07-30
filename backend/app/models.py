@@ -125,23 +125,20 @@ class TeamRanking(Base):
 # ==========================================================
 
 class MatchSummary(Base):
-
     __tablename__ = "vw_match_summary"
 
     match_id = Column(Integer, primary_key=True)
 
-    season_year = Column(Integer)
-
-    round_number = Column(Integer)
-
-    match_date = Column(String)
+    season = Column(Integer)
+    round = Column(Integer)
 
     home_team = Column(String)
-
     away_team = Column(String)
 
     home_score = Column(Integer)
-
     away_score = Column(Integer)
+
+    winning_margin = Column(Integer)
+    total_score = Column(Integer)
 
     winner = Column(String)
