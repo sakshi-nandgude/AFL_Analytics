@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: afl-analytics-backend
+    runtime: python
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker app.main:app
