@@ -8,9 +8,10 @@ router = APIRouter(
 @router.get(
     "/",
     summary="Health Check",
-    description="Returns the current status of the API."
+    description="Checks whether the AFL Analytics API is running.",
 )
 def health_check():
+
     return {
         "status": "healthy",
         "service": "AFL Analytics API"

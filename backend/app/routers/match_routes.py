@@ -13,8 +13,17 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=list[MatchSummarySchema])
-
-def read_matches(db: Session = Depends(get_db)):
+@router.get(
+    "/",
+    response_model=list[MatchSummarySchema],
+    summary="Get Match Summaries",
+    description=(
+        "Returns match-level analytics including season, round, "
+        "teams, scores, winning margin, total score, and winner."
+    ),
+)
+def read_matches(
+    db: Session = Depends(get_db)
+):
 
     return get_matches(db)

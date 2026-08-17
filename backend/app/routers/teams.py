@@ -24,7 +24,13 @@ router = APIRouter(
 
 @router.get(
     "/",
-    response_model=list[TeamPerformanceSchema]
+    response_model=list[TeamPerformanceSchema],
+    summary="Get Team Performance",
+    description=(
+        "Returns aggregated performance metrics for all AFL teams, "
+        "including wins, losses, draws, win percentage, scoring "
+        "performance, and average scores."
+    ),
 )
 def get_teams(
     db: Session = Depends(get_db)
@@ -35,7 +41,9 @@ def get_teams(
 
 @router.get(
     "/{team_id}",
-    response_model=TeamPerformanceSchema
+    response_model=TeamPerformanceSchema,
+    summary="Get Team Performance by ID",
+    description="Returns detailed performance metrics for a specific AFL team.",
 )
 def get_team(
     team_id: int,

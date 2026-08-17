@@ -23,7 +23,12 @@ router = APIRouter(
 
 @router.get(
     "/",
-    response_model=DashboardSummarySchema
+    response_model=DashboardSummarySchema,
+    summary="Get Dashboard Summary",
+    description=(
+        "Returns high-level AFL performance metrics including "
+        "team count, player count, match count, and average scores."
+    ),
 )
 def dashboard(db: Session = Depends(get_db)):
 
