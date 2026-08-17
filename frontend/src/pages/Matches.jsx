@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import api from "../services/api";
 import { API_ENDPOINTS } from "../utils/constants";
@@ -6,9 +6,7 @@ import { API_ENDPOINTS } from "../utils/constants";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import MatchTable from "../components/MatchTable";
-import DashboardCard from "../components/DashboardCard";
 
-import "../styles/dashboard.css";
 import "../styles/tables.css";
 
 function Matches() {
@@ -19,7 +17,51 @@ function Matches() {
 
     const [error, setError] = useState("");
 
-    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+
+    const [size, setSize] = useState(10);
+
+    const [total, setTotal] = useState(0);
+
+    const [pages, setPages] = useState(0);
+
+    const [team, setTeam] = useState("");
+
+    const [winner, setWinner] = useState("");
+
+    const [season, setSeason] = useState("");
+
+    const [sortBy, setSortBy] = useState("season");
+
+    const [sortOrder, setSortOrder] = useState("desc");
+
+    const [appliedFilters, setAppliedFilters] = useState({
+        team: "",
+        winner: "",
+        season: ""
+    });
+
+    function handleSort(column) {
+
+        if (sortBy === column) {
+
+            setSortOrder(
+                sortOrder === "asc"
+                    ? "desc"
+                    : "asc"
+            );
+
+        } else {
+
+            setSortBy(column);
+
+            setSortOrder("desc");
+
+        }
+
+        setPage(1);
+    }
+
 
     useEffect(() => {
 
@@ -27,19 +69,53 @@ function Matches() {
 
             try {
 
-                const response = await api.get(API_ENDPOINTS.MATCHES);
+                setLoading(true);
 
-                setMatches(response.data);
+                setError("");
 
-            }
+                const params = {
+                    page: page,
+                    size: size,
+                    sort_by: sortBy,
+                    sort_order: sortOrder
+                };
 
-            catch {
+                if (appliedFilters.team) {
+                    params.team = appliedFilters.team;
+                }
 
-                setError("Unable to load matches.");
+                if (appliedFilters.winner) {
+                    params.winner = appliedFilters.winner;
+                }
 
-            }
+                if (appliedFilters.season) {
+                    params.season = Number(
+                        appliedFilters.season
+                    );
+                }
 
-            finally {
+                const response = await api.get(
+                    API_ENDPOINTS.MATCHES,
+                    {
+                        params: params
+                    }
+                );
+
+                setMatches(response.data.data);
+
+                setTotal(response.data.total);
+
+                setPages(response.data.pages);
+
+            } catch (err) {
+
+                console.error(err);
+
+                setError(
+                    "Unable to load match data."
+                );
+
+            } finally {
 
                 setLoading(false);
 
@@ -49,98 +125,242 @@ function Matches() {
 
         loadMatches();
 
-    }, []);
+    }, [page, size, appliedFilters, sortBy, sortOrder]);
 
-    const filteredMatches = useMemo(() => {
 
-        return matches.filter(match =>
+    function handleApplyFilters() {
 
-            match.home_team.toLowerCase().includes(search.toLowerCase()) ||
+        setPage(1);
 
-            match.away_team.toLowerCase().includes(search.toLowerCase())
+        setAppliedFilters({
+            team: team.trim(),
+            winner: winner.trim(),
+            season: season.trim()
+        });
 
+    }
+
+
+    function handleClearFilters() {
+
+        setTeam("");
+
+        setWinner("");
+
+        setSeason("");
+
+        setPage(1);
+
+        setAppliedFilters({
+            team: "",
+            winner: "",
+            season: ""
+        });
+
+    }
+
+
+    function handlePreviousPage() {
+
+        if (page > 1) {
+
+            setPage(page - 1);
+
+        }
+
+    }
+
+
+    function handleNextPage() {
+
+        if (page < pages) {
+
+            setPage(page + 1);
+
+        }
+
+    }
+
+
+    function handlePageSizeChange(event) {
+
+        setSize(
+            Number(event.target.value)
         );
 
-    }, [matches, search]);
+        setPage(1);
 
-    if (loading) return <Loading />;
+    }
 
-    if (error) return <ErrorMessage message={error} />;
+
+    if (loading) {
+
+        return <Loading />;
+
+    }
+
+
+    if (error) {
+
+        return <ErrorMessage message={error} />;
+
+    }
+
 
     return (
 
-        <main style={{ padding: 30 }}>
+        <main style={{ padding: "30px" }}>
 
             <h1>Match Analytics</h1>
 
-            <div className="dashboard-grid">
 
-                <DashboardCard
+            {/* Filters */}
 
-                    title="Matches"
+            <div
+                style={{
+                    display: "flex",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                    marginBottom: "20px"
+                }}
+            >
 
-                    value={matches.length}
-
-                />
-
-                <DashboardCard
-
-                    title="Average Score"
-
-                    value={
-
-                        (
-                            matches.reduce(
-
-                                (sum, m) => sum + m.total_score,
-
-                                0
-
-                            ) / matches.length
-
-                        ).toFixed(1)
-
+                <input
+                    type="text"
+                    placeholder="Search team"
+                    value={team}
+                    onChange={(e) =>
+                        setTeam(e.target.value)
                     }
-
                 />
 
-                <DashboardCard
 
-                    title="Biggest Margin"
-
-                    value={
-
-                        Math.max(
-
-                            ...matches.map(
-
-                                m => m.winning_margin
-
-                            )
-
-                        )
-
+                <input
+                    type="text"
+                    placeholder="Winner"
+                    value={winner}
+                    onChange={(e) =>
+                        setWinner(e.target.value)
                     }
-
                 />
+
+
+                <input
+                    type="number"
+                    placeholder="Season"
+                    value={season}
+                    onChange={(e) =>
+                        setSeason(e.target.value)
+                    }
+                />
+
+
+                <button
+                    onClick={handleApplyFilters}
+                >
+                    Apply Filters
+                </button>
+
+
+                <button
+                    onClick={handleClearFilters}
+                >
+                    Clear
+                </button>
 
             </div>
 
-            <input
 
-                placeholder="Search Team"
+            {/* Page size */}
 
-                value={search}
+            <div style={{ marginBottom: "20px" }}>
 
-                onChange={(e) =>
+                <label>
 
-                    setSearch(e.target.value)
+                    Matches per page:&nbsp;
 
-                }
+                    <select
+                        value={size}
+                        onChange={handlePageSizeChange}
+                    >
 
+                        <option value={10}>
+                            10
+                        </option>
+
+                        <option value={25}>
+                            25
+                        </option>
+
+                        <option value={50}>
+                            50
+                        </option>
+
+                        <option value={100}>
+                            100
+                        </option>
+
+                    </select>
+
+                </label>
+
+            </div>
+
+
+            {/* Table */}
+
+            <MatchTable
+                matches={matches}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onSort={handleSort}
             />
 
-            <MatchTable matches={filteredMatches} />
+
+            {/* Pagination */}
+
+            <div
+                style={{
+                    marginTop: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "15px"
+                }}
+            >
+
+                <button
+                    onClick={handlePreviousPage}
+                    disabled={page === 1}
+                >
+                    Previous
+                </button>
+
+
+                <span>
+
+                    Page {page} of {pages}
+
+                </span>
+
+
+                <button
+                    onClick={handleNextPage}
+                    disabled={
+                        page === pages ||
+                        pages === 0
+                    }
+                >
+                    Next
+                </button>
+
+
+                <span>
+
+                    Total matches: {total}
+
+                </span>
+
+            </div>
 
         </main>
 
