@@ -134,3 +134,12 @@ class MatchSummarySchema(BaseModel):
 
     class Config:
         from_attributes = True
+        
+class MatchPaginationSchema(BaseModel):
+
+    data: list[MatchSummarySchema]
+
+    page: int
+    size: int
+    total: int
+    pages: int

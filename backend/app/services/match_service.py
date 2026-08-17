@@ -1,3 +1,5 @@
+import math
+
 from sqlalchemy.orm import Session
 
 from app.models import MatchSummary
@@ -13,6 +15,7 @@ def get_matches(
     sort_by: str = "season",
     sort_order: str = "desc"
 ):
+
     query = db.query(MatchSummary)
 
     # Season filter
@@ -56,12 +59,25 @@ def get_matches(
     else:
         query = query.order_by(sort_column.desc())
 
+    # Total records before pagination
+    total = query.count()
+
     # Pagination
     offset = (page - 1) * size
 
-    return (
+    matches = (
         query
         .offset(offset)
         .limit(size)
         .all()
     )
+
+    pages = math.ceil(total / size) if total > 0 else 0
+
+    return {
+        "data": matches,
+        "page": page,
+        "size": size,
+        "total": total,
+        "pages": pages
+    }

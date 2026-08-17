@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas import MatchSummarySchema
 from app.services.match_service import get_matches
+from app.schemas import MatchPaginationSchema
 
 router = APIRouter(
     prefix="/matches",
@@ -13,7 +14,7 @@ router = APIRouter(
 
 @router.get(
     "/",
-    response_model=list[MatchSummarySchema],
+    response_model=MatchPaginationSchema,
     summary="Get Match Summaries",
     description=(
         "Returns paginated AFL match analytics with optional "
