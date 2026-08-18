@@ -115,7 +115,7 @@ function Matches() {
 
                 // Fetch analytics for the same filters
                 const analyticsResponse = await api.get(
-                    `${API_ENDPOINTS.MATCHES}/analytics`,
+                    `${API_ENDPOINTS.MATCHES}analytics`,
                     {
                         params: {
                             ...(appliedFilters.team && {
