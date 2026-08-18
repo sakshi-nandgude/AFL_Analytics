@@ -6,8 +6,10 @@ import { API_ENDPOINTS } from "../utils/constants";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import MatchTable from "../components/MatchTable";
+import KPICard from "../components/KPICard";
 
 import "../styles/tables.css";
+import "../styles/cards.css";
 
 function Matches() {
 
@@ -206,12 +208,67 @@ function Matches() {
 
     }
 
+    const averageTotalScore =
+        matches.length > 0
+            ? (
+                matches.reduce(
+                    (sum, match) => sum + match.total_score,
+                    0
+                ) / matches.length
+            ).toFixed(1)
+            : "0.0";
+
+
+    const averageWinningMargin =
+        matches.length > 0
+            ? (
+                matches.reduce(
+                    (sum, match) => sum + match.winning_margin,
+                    0
+                ) / matches.length
+            ).toFixed(1)
+            : "0.0";
+
+
+    const highestScore =
+        matches.length > 0
+            ? Math.max(
+                ...matches.map(
+                    match => match.total_score
+                )
+            )
+            : 0;
+
 
     return (
 
         <main style={{ padding: "30px" }}>
 
             <h1>Match Analytics</h1>
+
+            <div className="kpi-grid">
+
+                <KPICard
+                    title="Matches"
+                    value={total}
+                />
+
+                <KPICard
+                    title="Avg Total Score"
+                    value={averageTotalScore}
+                />
+
+                <KPICard
+                    title="Avg Winning Margin"
+                    value={averageWinningMargin}
+                />
+
+                <KPICard
+                    title="Highest Match Score"
+                    value={highestScore}
+                />
+
+            </div>
 
 
             {/* Filters */}
