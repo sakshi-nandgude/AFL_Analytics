@@ -2,15 +2,40 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.schemas import MatchSummarySchema
-from app.services.match_service import get_matches
 from app.schemas import MatchPaginationSchema
+
+from app.schemas import (
+    MatchSummarySchema,
+    MatchAnalyticsSchema
+)
+
+from app.services.match_service import (
+    get_matches,
+    get_match_analytics
+)
 
 router = APIRouter(
     prefix="/matches",
     tags=["Matches"]
 )
 
+@router.get(
+    "/analytics",
+    response_model=MatchAnalyticsSchema,
+    summary="Get Match Analytics"
+)
+def match_analytics(
+    team: str | None = None,
+    winner: str | None = None,
+    season: int | None = None,
+    db: Session = Depends(get_db)
+):
+    return get_match_analytics(
+        db=db,
+        team=team,
+        winner=winner,
+        season=season
+    )
 
 @router.get(
     "/",

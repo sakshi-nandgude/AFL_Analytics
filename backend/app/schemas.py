@@ -143,3 +143,14 @@ class MatchPaginationSchema(BaseModel):
     size: int
     total: int
     pages: int
+    
+    
+class MatchAnalyticsSchema(BaseModel):
+
+    total_matches: int
+
+    average_total_score: float
+
+    average_winning_margin: float
+
+    highest_match_score: int

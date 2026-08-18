@@ -4,6 +4,57 @@ from sqlalchemy.orm import Session
 
 from app.models import MatchSummary
 
+from sqlalchemy import func
+
+
+
+def get_match_analytics(
+    db,
+    team: str | None = None,
+    winner: str | None = None,
+    season: int | None = None
+):
+    query = db.query(
+        func.count(MatchSummary.match_id).label("total_matches"),
+        func.avg(MatchSummary.total_score).label("average_total_score"),
+        func.avg(MatchSummary.winning_margin).label(
+            "average_winning_margin"
+        ),
+        func.max(MatchSummary.total_score).label(
+            "highest_match_score"
+        )
+    )
+
+    if season is not None:
+        query = query.filter(
+            MatchSummary.season == season
+        )
+
+    if team:
+        query = query.filter(
+            (MatchSummary.home_team.ilike(f"%{team}%")) |
+            (MatchSummary.away_team.ilike(f"%{team}%"))
+        )
+
+    if winner:
+        query = query.filter(
+            MatchSummary.winner.ilike(f"%{winner}%")
+        )
+
+    result = query.one()
+
+    return {
+        "total_matches": result.total_matches or 0,
+        "average_total_score": round(
+            float(result.average_total_score or 0),
+            1
+        ),
+        "average_winning_margin": round(
+            float(result.average_winning_margin or 0),
+            1
+        ),
+        "highest_match_score": result.highest_match_score or 0
+    }
 
 def get_matches(
     db: Session,
