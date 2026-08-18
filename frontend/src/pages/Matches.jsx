@@ -43,6 +43,13 @@ function Matches() {
         season: ""
     });
 
+    const [analytics, setAnalytics] = useState({
+        total_matches: 0,
+        average_total_score: 0,
+        average_winning_margin: 0,
+        highest_match_score: 0
+    });
+
     function handleSort(column) {
 
         if (sortBy === column) {
@@ -96,18 +103,55 @@ function Matches() {
                     );
                 }
 
-                const response = await api.get(
+
+                // Fetch paginated matches
+                const matchesResponse = await api.get(
                     API_ENDPOINTS.MATCHES,
                     {
                         params: params
                     }
                 );
 
-                setMatches(response.data.data);
 
-                setTotal(response.data.total);
+                // Fetch analytics for the same filters
+                const analyticsResponse = await api.get(
+                    `${API_ENDPOINTS.MATCHES}/analytics`,
+                    {
+                        params: {
+                            ...(appliedFilters.team && {
+                                team: appliedFilters.team
+                            }),
+                            ...(appliedFilters.winner && {
+                                winner: appliedFilters.winner
+                            }),
+                            ...(appliedFilters.season && {
+                                season: Number(
+                                    appliedFilters.season
+                                )
+                            })
+                        }
+                    }
+                );
 
-                setPages(response.data.pages);
+
+                // Update table
+                setMatches(
+                    matchesResponse.data.data
+                );
+
+                setTotal(
+                    matchesResponse.data.total
+                );
+
+                setPages(
+                    matchesResponse.data.pages
+                );
+
+
+                // Update KPI analytics
+                setAnalytics(
+                    analyticsResponse.data
+                );
 
             } catch (err) {
 
@@ -127,8 +171,13 @@ function Matches() {
 
         loadMatches();
 
-    }, [page, size, appliedFilters, sortBy, sortOrder]);
-
+    }, [
+        page,
+        size,
+        appliedFilters,
+        sortBy,
+        sortOrder
+    ]);
 
     function handleApplyFilters() {
 
@@ -250,22 +299,22 @@ function Matches() {
 
                 <KPICard
                     title="Matches"
-                    value={total}
+                    value={analytics.total_matches}
                 />
 
                 <KPICard
                     title="Avg Total Score"
-                    value={averageTotalScore}
+                    value={analytics.average_total_score}
                 />
 
                 <KPICard
                     title="Avg Winning Margin"
-                    value={averageWinningMargin}
+                    value={analytics.average_winning_margin}
                 />
 
                 <KPICard
                     title="Highest Match Score"
-                    value={highestScore}
+                    value={analytics.highest_match_score}
                 />
 
             </div>
