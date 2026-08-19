@@ -12,7 +12,8 @@ from app.models import TeamPerformance
 def get_all_teams(
     db: Session,
     sort_by: str = "team_name",
-    sort_order: str = "asc"
+    sort_order: str = "asc",
+    search: str | None = None
 ):
 
     allowed_sort_fields = {
@@ -33,13 +34,22 @@ def get_all_teams(
         TeamPerformance.team_name
     )
 
+    query = db.query(TeamPerformance)
+
+    if search:
+        query = query.filter(
+            TeamPerformance.team_name.ilike(
+                f"%{search}%"
+            )
+        )
+
     if sort_order == "desc":
         sort_column = sort_column.desc()
     else:
         sort_column = sort_column.asc()
 
     return (
-        db.query(TeamPerformance)
+        query
         .order_by(sort_column)
         .all()
     )

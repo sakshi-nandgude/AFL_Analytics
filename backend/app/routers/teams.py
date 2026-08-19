@@ -40,13 +40,17 @@ def get_teams(
     sort_order: str = Query(
         default="asc"
     ),
+    search: str | None = Query(
+        default=None
+    ),
     db: Session = Depends(get_db)
-):  
+):
     
     return get_all_teams(
     db=db,
     sort_by=sort_by,
-    sort_order=sort_order
+    sort_order=sort_order,
+    search=search
 )
 
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import api from "../services/api";
 import { API_ENDPOINTS } from "../utils/constants";
@@ -6,45 +6,73 @@ import { API_ENDPOINTS } from "../utils/constants";
 import TeamTable from "../components/TeamTable";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
-import "../styles/dashboard.css";
-import DashboardCard from "../components/DashboardCard";
-import WinPercentageChart from "../components/WinPercentageChart";
-import LeagueInsights from "../components/LeagueInsights";
+
 import "../styles/tables.css";
 
 function Teams() {
+
     const [teams, setTeams] = useState([]);
+
     const [loading, setLoading] = useState(true);
+
     const [error, setError] = useState("");
-    const [searchTerm, setSearchTerm] = useState("");
+
     const [sortBy, setSortBy] = useState("team_name");
+
     const [sortOrder, setSortOrder] = useState("asc");
-    const [sortColumn, setSortColumn] = useState("win_percentage");
-    const [sortDirection, setSortDirection] = useState("desc");
+
+    const [search, setSearch] = useState("");
+
+    const [appliedSearch, setAppliedSearch] = useState("");
+
 
     useEffect(() => {
+
         async function loadTeams() {
+
             try {
+
+                setLoading(true);
+
+                setError("");
+
                 const response = await api.get(
                     API_ENDPOINTS.TEAMS,
                     {
                         params: {
                             sort_by: sortBy,
-                            sort_order: sortOrder
+                            sort_order: sortOrder,
+                            search: appliedSearch
                         }
                     }
                 );
+
                 setTeams(response.data);
+
             } catch (err) {
+
                 console.error(err);
-                setError("Unable to load team data.");
+
+                setError(
+                    "Unable to load team data."
+                );
+
             } finally {
+
                 setLoading(false);
+
             }
+
         }
 
         loadTeams();
-    }, [sortBy, sortOrder]);
+
+    }, [
+        sortBy,
+        sortOrder,
+        appliedSearch
+    ]);
+
 
     function handleSort(column) {
 
@@ -66,105 +94,79 @@ function Teams() {
 
     }
 
-    const filteredTeams = useMemo(() => {
-        const filtered = teams.filter((team) =>
-            team.team_name.toLowerCase().includes(searchTerm.toLowerCase())
+
+    function handleSearch() {
+
+        setAppliedSearch(
+            search.trim()
         );
 
-        return [...filtered].sort((a, b) => {
-            const first = a[sortColumn];
-            const second = b[sortColumn];
+    }
 
-            if (typeof first === "string") {
-                return sortDirection === "asc"
-                    ? first.localeCompare(second)
-                    : second.localeCompare(first);
-            }
 
-            return sortDirection === "asc"
-                ? first - second
-                : second - first;
-        });
-    }, [teams, searchTerm, sortColumn, sortDirection]);
+    function handleClearSearch() {
 
-    if (loading) return <Loading />;
+        setSearch("");
 
-    if (error) return <ErrorMessage message={error} />;
+        setAppliedSearch("");
 
-    const totalTeams = teams.length;
+    }
 
-    const totalMatches = teams.reduce(
-        (sum, team) => sum + team.matches_played,
-        0
-    ) / 2;
 
-    const averageWinPercentage =
-        teams.reduce((sum, team) => sum + team.win_percentage, 0) /
-        totalTeams;
+    if (loading) {
 
-    const bestTeam = [...teams].sort(
-        (a, b) => b.win_percentage - a.win_percentage
-    )[0];
+        return <Loading />;
 
-    const highestScoringTeam = [...teams].sort(
-        (a, b) => b.average_score - a.average_score
-    )[0];
+    }
+
+
+    if (error) {
+
+        return <ErrorMessage message={error} />;
+
+    }
+
 
     return (
+
         <main style={{ padding: "30px" }}>
-            <h1>Team Performance Analytics</h1>
 
-            <p style={{ color: "#666", marginBottom: "20px" }}>
-                Performance metrics for every AFL team.
-            </p>
+            <h1>AFL Teams</h1>
 
-            <div className="dashboard-grid">
 
-                <DashboardCard
-                    title="Total Teams"
-                    value={totalTeams}
+            <div
+                style={{
+                    display: "flex",
+                    gap: "10px",
+                    marginBottom: "20px"
+                }}
+            >
+
+                <input
+                    type="text"
+                    placeholder="Search team"
+                    value={search}
+                    onChange={(e) =>
+                        setSearch(e.target.value)
+                    }
                 />
 
-                <DashboardCard
-                    title="Total Matches"
-                    value={Math.round(totalMatches)}
-                />
 
-                <DashboardCard
-                    title="Average Win %"
-                    value={`${averageWinPercentage.toFixed(2)}%`}
-                />
+                <button
+                    onClick={handleSearch}
+                >
+                    Search
+                </button>
 
-                <DashboardCard
-                    title="Best Team"
-                    value={bestTeam?.team_name}
-                />
 
-                <DashboardCard
-                    title="Highest Scoring Team"
-                    value={highestScoringTeam?.team_name}
-                />
+                <button
+                    onClick={handleClearSearch}
+                >
+                    Clear
+                </button>
 
             </div>
 
-            <LeagueInsights teams={teams} />
-
-            <WinPercentageChart teams={filteredTeams} />
-
-            <input
-                type="text"
-                placeholder="Search team..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                    width: "320px",
-                    padding: "10px",
-                    marginBottom: "20px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                    fontSize: "15px",
-                }}
-            />
 
             <TeamTable
                 teams={teams}
@@ -172,8 +174,11 @@ function Teams() {
                 sortOrder={sortOrder}
                 onSort={handleSort}
             />
+
         </main>
+
     );
+
 }
 
 export default Teams;
