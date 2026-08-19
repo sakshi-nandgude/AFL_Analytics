@@ -16,16 +16,24 @@ function Teams() {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
     const [searchTerm, setSearchTerm] = useState("");
-
+    const [sortBy, setSortBy] = useState("team_name");
+    const [sortOrder, setSortOrder] = useState("asc");
     const [sortColumn, setSortColumn] = useState("win_percentage");
     const [sortDirection, setSortDirection] = useState("desc");
 
     useEffect(() => {
         async function loadTeams() {
             try {
-                const response = await api.get(API_ENDPOINTS.TEAMS);
+                const response = await api.get(
+                    API_ENDPOINTS.TEAMS,
+                    {
+                        params: {
+                            sort_by: sortBy,
+                            sort_order: sortOrder
+                        }
+                    }
+                );
                 setTeams(response.data);
             } catch (err) {
                 console.error(err);
@@ -36,15 +44,26 @@ function Teams() {
         }
 
         loadTeams();
-    }, []);
+    }, [sortBy, sortOrder]);
 
     function handleSort(column) {
-        if (sortColumn === column) {
-            setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+
+        if (sortBy === column) {
+
+            setSortOrder(
+                sortOrder === "asc"
+                    ? "desc"
+                    : "asc"
+            );
+
         } else {
-            setSortColumn(column);
-            setSortDirection("desc");
+
+            setSortBy(column);
+
+            setSortOrder("desc");
+
         }
+
     }
 
     const filteredTeams = useMemo(() => {
@@ -148,9 +167,9 @@ function Teams() {
             />
 
             <TeamTable
-                teams={filteredTeams}
-                sortColumn={sortColumn}
-                sortDirection={sortDirection}
+                teams={teams}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
                 onSort={handleSort}
             />
         </main>
