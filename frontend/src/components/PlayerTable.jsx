@@ -1,5 +1,23 @@
-function PlayerTable({ players }) {
+function PlayerTable({
+    players,
+    sortBy,
+    sortOrder,
+    onSort
+}) {
+
+    function renderSortIndicator(column) {
+
+        if (sortBy !== column) {
+            return "";
+        }
+
+        return sortOrder === "asc"
+            ? " ▲"
+            : " ▼";
+    }
+
     return (
+
         <table className="team-table">
 
             <thead>
@@ -7,13 +25,62 @@ function PlayerTable({ players }) {
                 <tr>
 
                     <th>ID</th>
-                    <th>Player</th>
-                    <th>Team</th>
-                    <th>Position</th>
-                    <th>Goals</th>
-                    <th>Marks</th>
-                    <th>Tackles</th>
-                    <th>Disposals</th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("player_name")}
+                    >
+                        Player
+                        {renderSortIndicator("player_name")}
+                    </th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("team_name")}
+                    >
+                        Team
+                        {renderSortIndicator("team_name")}
+                    </th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("position")}
+                    >
+                        Position
+                        {renderSortIndicator("position")}
+                    </th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("total_goals")}
+                    >
+                        Goals
+                        {renderSortIndicator("total_goals")}
+                    </th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("total_marks")}
+                    >
+                        Marks
+                        {renderSortIndicator("total_marks")}
+                    </th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("total_tackles")}
+                    >
+                        Tackles
+                        {renderSortIndicator("total_tackles")}
+                    </th>
+
+                    <th
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onSort("total_disposals")}
+                    >
+                        Disposals
+                        {renderSortIndicator("total_disposals")}
+                    </th>
 
                 </tr>
 
