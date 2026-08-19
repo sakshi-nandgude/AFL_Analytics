@@ -4,8 +4,8 @@ teams.py
 Team API Router.
 """
 
-from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.database import get_db
 
@@ -32,11 +32,22 @@ router = APIRouter(
         "performance, and average scores."
     ),
 )
-def get_teams(
-    db: Session = Depends(get_db)
-):
 
-    return get_all_teams(db)
+def get_teams(
+    sort_by: str = Query(
+        default="team_name"
+    ),
+    sort_order: str = Query(
+        default="asc"
+    ),
+    db: Session = Depends(get_db)
+):  
+    
+    return get_all_teams(
+    db=db,
+    sort_by=sort_by,
+    sort_order=sort_order
+)
 
 
 @router.get(
